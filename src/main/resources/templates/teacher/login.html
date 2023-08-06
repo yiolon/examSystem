@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Log in</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/common.css"/>
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+</head>
+<div class="wrap login_wrap">
+    <div class="content">
+        <div class="logo"></div>
+        <div class="login_box">
+
+            <div class="login_form">
+                <div class="login_title">Teacher background management</div>
+                <form th:action="@{/tealogin}" method="post">
+                    <div ></div>
+                    <div class="form_text_ipt">
+                        <input name="username" type="text" placeholder="User id">
+                    </div>
+                    <div class="ececk_warning"><span>user id couldn't be null</span></div>
+                    <div class="form_text_ipt">
+                        <input name="userpwd" type="password" placeholder="password">
+                    </div>
+                    <div class="ececk_warning"><span>password couldn't be null</span></div>
+                    <div id="nogg" style="text-align: center"><span style="color: red;text-align: center" id="sb" th:text="${msg}"/></div>
+<!--                    <input type="hidden" id="cxdl" th:value="${session.cxdl}"/>-->
+                    <script >
+                            var sb = document.getElementById("sb").innerText;
+                            if(sb!="") {
+                                setTimeout(function () {
+                                    document.getElementById("nogg").style.display = "none";
+                                    location.replace("./llogout")
+                                }, 1000);
+                            }
+                    </script>
+                    <script>
+                            var cxdl = document.getElementById("cxdl").value;
+                          if (cxdl!="") {
+                                alert("password changed successfully! Please log in.");
+                                location.replace("./llogout");
+                          }
+                    </script>
+                    <div class="form_check_ipt">
+                        <div class="left check_left">
+                            <label><input name="" type="checkbox"> Remember login</label>
+                        </div>
+
+                    </div>
+                    <div class="form_btn">
+                        <button type="submit">Log in</button>
+                    </div>
+                   <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                        <a class="btn btn-primary" th:href="@{/toStuLogin}">Go to Student Login</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js" ></script>
+<script type="text/javascript" src="js/common.js" ></script>
+</body>
+</html>
