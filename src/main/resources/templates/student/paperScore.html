@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <div th:replace="include/bootstrap :: bootstrap"></div>
+</head>
+<body>
+<div th:replace="include/bootstrap :: StudentNav"></div>
+
+<div class="container">
+    <div class="jumbotron">
+        <h4 style="text-align: center">The exam has been submitted. Your score is <font color="red" th:text="${score}"></font> points</h4>
+    </div>
+</div>
+<script type="text/javascript">
+    onload=function(){
+        setInterval(go, 1000);
+    };
+    var x=3; // Utilizing a global variable for execution全局变量
+    function go(){
+        x--;
+        if(x>0){
+            document.getElementById("sp").innerHTML=x; // Setting x's value differently each time.每次x值不一样
+        } else {
+            location.href='./findAllStuPaper';
+        }
+    }
+</script>
+</body>
+</html>
