@@ -8,7 +8,7 @@
 <body>
 <script>
     $(function(){
-        //实现全选与反选 var ids=[];
+        // Implement select all and deselect all
         $("#allAndNotAll").click(function() {
             if (this.checked){
                 $("input[name='items']:checkbox").each(function(){
@@ -20,45 +20,46 @@
                 });
             }
         });
-        //获取被选中的id
+        // Get selected IDs
 
         $('#getAllSelectedId').click(function(){
-            var ids=new Array();
+            var ids = new Array();
             $("input[name='items']:checked").each(function(){
                 ids.push($(this).attr("id"));
             });
-            // var chk_value=ids.join(",");
-            if(ids==""){
-                alert("请选择删除的数据！")
-            }else {
-                if(confirm('将删除与该试卷有关的所有数据，是否继续?')){
-                    location.href = "deleteManyStu?ids="+ids;
+            // var chk_value = ids.join(",");
+            if(ids == ""){
+                alert("Please select data to delete!")
+            } else {
+                if(confirm('All data related to this exam paper will be deleted. Do you want to continue?')){
+                    location.href = "deleteManyStu?ids=" + ids;
                 }
-
             }
-
         });
     });
     function add() {
-        window.location.href="/addexam"
+        window.location.href = "/addexam";
     }
 </script>
+
 <div th:replace="include/TeacherNav :: TeacherNav"></div>
 <div class="table-responsive" style="margin-left: 18%">
-    <table class="table table-striped"  >
+    <table class="table table-striped">
         <thead>
         <tr>
-            <th colspan="5" style="text-align:left ;font-size: 20px"><button class="line btn btn-primary btn-sm" onclick="add()" >添加新试卷</button>&nbsp;&nbsp;&nbsp;
+            <th colspan="5" style="text-align: left; font-size: 20px">
+                <button class="line btn btn-primary btn-sm" onclick="add()">Add New Exam Paper</button>&nbsp;&nbsp;&nbsp;
+            </th>
         </tr>
         <tr>
-            <td ><input type="checkbox" id="allAndNotAll" />全选/反选</td>
-            <th>编号</th>
-            <th>试卷名称</th>
-            <th>单选题数量</th>
-            <th>单选题分值</th>
-            <th>考试日期</th>
-            <th>考试时间</th>
-            <th>操作</th>
+            <td><input type="checkbox" id="allAndNotAll"/>Select All/Deselect All</td>
+            <th>ID</th>
+            <th>Exam Paper Name</th>
+            <th>Number of Single Choice Questions</th>
+            <th>Single Choice Question Score</th>
+            <th>Exam Date</th>
+            <th>Exam Time</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -68,71 +69,73 @@
             <td th:text="${examlist.pname}"></td>
             <td th:text="${examlist.singlenumber}"></td>
             <td th:text="${examlist.singlecore}*${examlist.singlenumber}"></td>
-            <td th:text="${examlist.examdate}+'至'+${examlist.examtime}"></td>
-            <td th:text="${examlist.testtime}+'分钟'"></td>
+            <td th:text="${examlist.examdate} + ' to ' + ${examlist.examtime}"></td>
+            <td th:text="${examlist.testtime} + ' minutes'"></td>
             <td>
-                <a th:onclick="'javascript:edit(\''+${examlist.eid}+'\');'" style="text-decoration: none;">
-                    <button class="btn btn-default" style="width: 50px;height: 30px;background: #3e8f3e">修改</button>
+                <a th:onclick="'javascript:edit(\''+${examlist.eid}+'\');" style="text-decoration: none;">
+                    <button class="btn btn-default" style="width: 50px; height: 30px; background: #3e8f3e">Edit</button>
                 </a>
-                <a th:onclick="'javascript:trash(\''+${examlist.eid}+'\');'" style="text-decoration: none;"
+                <a th:onclick="'javascript:trash(\''+${examlist.eid}+'\');" style="text-decoration: none;"
                    data-toggle="modal" data-target="#trashModal">
-                    <button class="btn btn-default" style="width: 50px;height: 30px;background: red">删除</button>
+                    <button class="btn btn-default" style="width: 50px; height: 30px; background: red">Delete</button>
                 </a>
-                <a  style="text-decoration: none;" th:href="@{'./paperDetails?eid='+${examlist.eid}}">
-                    <button class="btn btn-default" style="width: 80px;height: 30px;background: deepskyblue">
-                        考卷详情
+                <a style="text-decoration: none;" th:href="@{'./paperDetails?eid='+${examlist.eid}}">
+                    <button class="btn btn-default" style="width: 80px; height: 30px; background: deepskyblue">
+                        Exam Details
                     </button>
                 </a>
             </td>
         </tr>
         </tbody>
     </table>
-
 </div>
+
 <div class="row" style="margin-left: 18%">
-    <!--分页文字信息  -->
-    <div class="col-md-6">当前 <span th:text="${pageInfo.pageNum}"></span>页,总<span th:text="${pageInfo.pages}"></span>
-        页,总 <span th:text="${pageInfo.total}"></span> 条记录</div>
-    <!-- 分页条信息 -->
+    <!-- Pagination text information -->
+    <div class="col-md-6">
+        Current page: <span th:text="${pageInfo.pageNum}"></span>, Total pages: <span th:text="${pageInfo.pages}"></span>,
+        Total records: <span th:text="${pageInfo.total}"></span>
+    </div>
+    <!-- Pagination bar information -->
     <div class="col-md-6">
         <nav aria-label="Page navigation">
             <ul class="pagination">
-                <li><a th:href="@{/selectexam}">首页</a></li>
-                <li><a th:href="@{/selectexam(pageNum = ${pageInfo.hasPreviousPage} ? ${pageInfo.prePage } : 1)}">上一页</a></li>
-                <li><a th:href="@{/selectexam(pageNum = ${pageInfo.hasNextPage} ? ${pageInfo.nextPage} : ${pageInfo.pages})}">下一页</a></li>
-                <li><a th:href="@{/selectexam(pageNum = ${pageInfo.pages})}">末页</a></li>
+                <li><a th:href="@{/selectexam}">First</a></li>
+                <li><a th:href="@{/selectexam(pageNum = ${pageInfo.hasPreviousPage} ? ${pageInfo.prePage } : 1)}">Previous</a></li>
+                <li><a th:href="@{/selectexam(pageNum = ${pageInfo.hasNextPage} ? ${pageInfo.nextPage} : ${pageInfo.pages})}">Next</a></li>
+                <li><a th:href="@{/selectexam(pageNum = ${pageInfo.pages})}">Last</a></li>
             </ul>
         </nav>
     </div>
 </div>
-<!--编辑模态框-->
+<!-- Edit modal -->
 <div class="modal fade" id="examdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="Label">编辑</h4>
+                <h4 class="modal-title" id="Label">Edit</h4>
             </div>
             <form class="form-horizontal" th:action="@{/updateExam}" method="post">
                 <div class="modal-body">
                     <input name="eid" id="eid" hidden="hidden"/>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">试卷名称</label>
+                        <label class="col-sm-2 control-label">Exam Paper Name</label>
                         <div class="col-sm-10">
                             <input type="text" name="pname" class="form-control" id="pname">
                             <span class="help-block"></span>
                         </div>
                     </div>
                     <div class="form-group ">
-                        <label class="col-sm-2 control-label">所属课程</label>
+                        <label class="col-sm-2 control-label">Course</label>
                         <div class="col-sm-5">
                             <select class="form-control" id="cno" name="cno">
                             </select>
                         </div>
                     </div>
                     <div class="form-group ">
-                        <label class="col-sm-2 control-label">命题人</label>
+                        <label class="col-sm-2 control-label">Author</label>
                         <div class="col-sm-10">
                             <input type="text" name="userid" class="form-control" id="userid"
                                    placeholder="">
@@ -140,14 +143,14 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">所属班级</label>
+                        <label class="col-sm-2 control-label">Class</label>
                         <div class="col-sm-5">
                             <select class="form-control" id="classid" name="classid">
                             </select>
                         </div>
                     </div>
                     <div class="form-group ">
-                        <label class="col-sm-2 control-label">单选题数量</label>
+                        <label class="col-sm-2 control-label">Number of Single-choice Questions</label>
                         <div class="col-sm-10">
                             <input type="text" name="singlenumber" class="form-control" id="singlenumber"
                                    placeholder="">
@@ -155,16 +158,15 @@
                         </div>
                     </div>
                     <div class="form-group ">
-                        <label class="col-sm-2 control-label">单选题每题分值</label>
+                        <label class="col-sm-2 control-label">Score per Single-choice Question</label>
                         <div class="col-sm-10">
                             <input type="text" name="singlecore" class="form-control" id="singlecore"
                                    placeholder="">
                             <span class="help-block"></span>
                         </div>
                     </div>
-
                     <div class="form-group ">
-                        <label class="col-sm-2 control-label">开始时间</label>
+                        <label class="col-sm-2 control-label">Start Date</label>
                         <div class="col-sm-10">
                             <input type="date" name="examdate" class="form-control" id="examdate"
                                    placeholder="">
@@ -172,7 +174,7 @@
                         </div>
                     </div>
                     <div class="form-group ">
-                        <label class="col-sm-2 control-label">结束时间</label>
+                        <label class="col-sm-2 control-label">End Date</label>
                         <div class="col-sm-10">
                             <input type="date" name="examtime" class="form-control" id="examtime"
                                    placeholder="">
@@ -180,7 +182,7 @@
                         </div>
                     </div>
                     <div class="form-group ">
-                        <label class="col-sm-2 control-label">考试时间（分钟）</label>
+                        <label class="col-sm-2 control-label">Exam Duration (minutes)</label>
                         <div class="col-sm-10">
                             <input type="text" name="testtime" class="form-control" id="testtime"
                                    placeholder="">
@@ -189,48 +191,49 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="submit" class="btn btn-primary" id="tch_save_btn">保存</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="tch_save_btn">Save</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<!--删除的模态框-->
+<!-- Modal for deletion confirmation -->
 <div class="modal fade" id="trashModal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <!-- 模糊框头部 -->
+            <!-- Modal header -->
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
-                </button>
-                <h4 class="modal-title">删除！</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Delete!</h4>
             </div>
-            <!-- 模糊框主体 -->
+            <!-- Modal body -->
             <div class="modal-body">
-                <strong>你确定要删除吗？</strong>
+                <strong>Are you sure you want to delete?</strong>
             </div>
-            <!-- 模糊框底部 -->
+            <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="delSure btn btn-info" data-dismiss="modal">确定</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="delSure btn btn-info" data-dismiss="modal">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
 </div>
 <script>
-    //删除
+    // Deletion function
     function trash(eid) {
         if (!eid) {
-            alert("error");
+            alert("Error");
         } else {
             $(".delSure").click(function () {
-                window.location.href="/deleteExam?eid="+eid;
+                window.location.href = "/deleteExam?eid=" + eid;
             });
         }
     }
-    // 编辑信息的方法
+
+    // Edit information function
     function edit(eid) {
+        // Load course options
         $.ajax({
             url: '/findAllCourse',
             type: 'get',
@@ -240,6 +243,7 @@
                 }
             }
         });
+        // Load class options
         $.ajax({
             url: '/findAllClasses',
             type: 'get',
@@ -250,9 +254,9 @@
             }
         });
         if (!eid) {
-            alert("error");
+            alert("Error");
         } else {
-            // 先去查询数据
+            // Fetch data for editing
             $.ajax({
                 url: '/findByOneExam',
                 type: 'POST',
@@ -263,7 +267,7 @@
                 }),
                 success: function (data) {
                     $("#eid").val(data.eid);
-                    $("#pname").val(data.pname)
+                    $("#pname").val(data.pname);
                     $("#cno").val(data.cno);
                     $("#userid").val(data.userid);
                     $("#classid").val(data.classid);
@@ -275,11 +279,12 @@
                     $("#examdit").modal('show');
                 },
                 error: function () {
-                    alert("error");
+                    alert("Error");
                 }
             });
         }
     }
 </script>
+
 </body>
 </html>
